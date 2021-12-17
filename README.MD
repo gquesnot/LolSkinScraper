@@ -1,8 +1,6 @@
 # SCRAP LOL SKIN INFOS FROM [LOL FANDOM](https://leagueoflegends.fandom.com/wiki/List_of_champion_skins_(League_of_Legends))
 
 
-for python 3.10.
-
 Look at skins.json for Raw Data
 
 ### Installation and Usage
@@ -12,7 +10,7 @@ pip install requirements.txt
 python main.py -wp
 ````
 ````
-usage: main.py [-h] [-ws] [-wp] [-dt DATE_TYPE]
+usage: main.py [-h] [-ws] [-wp] [-td TYPE_DATE]
 
 Scrap Lol Data
 
@@ -22,8 +20,8 @@ options:
                         run without scraping
   -wp, --without_parsing
                         run without parsing
-  -dt DATE_TYPE, --date_type DATE_TYPE
-                        type de date : year or month or day
+  -td TYPE_DATE, --type_date TYPE_DATE
+                        TYPE_DATE: year or month or day, default: year
 ````
 
 

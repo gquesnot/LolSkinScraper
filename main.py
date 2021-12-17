@@ -36,15 +36,15 @@ def sortSkinByDuration(skins, hint="date"):
     else:
         res = {f"20{i:02d}/{j:02d}": [] for i in range(9, 22) for j in range(1, 13)}
     for skin in sorted(skins, key=lambda x: x.date, reverse=False):
-        match hint:
-            case "date":
-                dateStr = skin.date
-            case "month":
-                dateStr = skin.getDateByMonth()
-            case "year":
-                dateStr = skin.getDateByYear()
-            case _:
-                continue
+
+        if hint == "date":
+            dateStr = skin.date
+        elif hint == "month":
+            dateStr = skin.getDateByMonth()
+        elif hint == "year":
+            dateStr = skin.getDateByYear()
+        else:
+            continue
         if dateStr not in res:
             res[dateStr] = []
         res[dateStr].append(skin)
