@@ -5,12 +5,14 @@
 
 
 # Press the green button in the gutter to run the script.
+import argparse
 import json
 import os
 
 from scrapy.crawler import CrawlerProcess
 
-from skins.skins.skinClass import Skin
+from my_dataclasses.skin import Skin
+from my_enum.price_type import PriceType
 from skins.skins.spiders.skinsScrapping import SkinsscrappingSpider
 
 
@@ -55,34 +57,43 @@ def parseSkins(path, hintDate):
         skins = [Skin.from_dict(item) for item in json.load(f)]
         res = sortSkinByDuration(skins, hintDate)
 
-        for dbm, skins in res.items():
-            allPrices = 0
-            prices = 0
-            all = 0
-            withChroma = 0
+    for dateByHint, skins in res.items():
+        allPrices = 0
+        prices = 0
+        all = 0
+        withChroma = 0
 
-            for skin in skins:
-                if skin.hasChroma:
-                    withChroma += 1
-                if skin.price is not None:
-                    allPrices += 1
-                    prices += skin.price
-                all += 1
-                # print(f"{dbm}\t{len(skins)}")
-            if all > 0:
-                print(
-                    f"{dbm}\t"
-                    f"{all}\t"
-                    f"{withChroma}\t"
-                    f"{int((withChroma / all) * 100) if allPrices else 0}%\t"
-                    f"0\t"
-                    f"{prices}"
-                )
+        for skin in skins:
+            if skin.hasChroma:
+                withChroma += 1
+            if skin.price.type == PriceType.RP:
+                allPrices += 1
+                prices += skin.price.value
+            all += 1
+            # print(f"{dateByHint}\t{len(skins)}")
+        if all > 0:
+            print(
+                f"{dateByHint}\t"
+                f"{all}\t"
+                f"{withChroma}\t"
+                f"{int((withChroma / all) * 100) if all else 0}%\t"
+                f"{prices/allPrices if allPrices else 0}\t"
+                f"{prices}"
+            )
     # print(nbSkins, i)
 
 
 if __name__ == '__main__':
-    crawlPath = "result.json"
-    startCrawler(crawlPath)
-    # parseSkins(crawlPath, "month")
+    parser = argparse.ArgumentParser(description='Scrap Lol Data')
+    parser.add_argument('-ws','--without_scraping', help="run without scraping", action="store_true")
+    parser.add_argument('-wp','--without_parsing', help="run without parsing", action="store_true")
+    parser.add_argument('-dt','--date_type', type=str, default="year", help="type de date : year or month or day")
+
+    args = parser.parse_args()
+    print(args)
+    crawlPath = "skins.json"
+    if not args.without_scraping:
+        startCrawler(crawlPath)
+    if not args.without_parsing:
+        parseSkins(crawlPath, args.date_type)
 

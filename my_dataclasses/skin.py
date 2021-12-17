@@ -2,7 +2,12 @@ import datetime
 import time
 from dataclasses import dataclass, asdict
 from typing import Dict, Any, Union
+
+import dacite
 from dacite import from_dict
+
+from my_dataclasses.price import Price
+from my_enum.price_type import PriceType
 
 
 @dataclass
@@ -20,7 +25,7 @@ class Skin:
     hasAnimationCanBeToggleIG: bool
     isPartOfCollection: bool
     hasFeaturesLores: bool
-    price: Union[int, None]
+    price: Price
 
     def getDateByMonth(self):
         return "/".join(self.date.split('/')[:-1])
@@ -34,4 +39,7 @@ class Skin:
             data['timestamp'] = int(time.mktime(datetime.datetime.strptime(data['date'],"%Y/%m/%d").timetuple()))
         elif data['date'] is None:
             data['timestamp'] = None
-        return from_dict(cls, data=data)
+        return from_dict(cls, data=data,config=dacite.Config(type_hooks={PriceType: PriceType}))
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)

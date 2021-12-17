@@ -1,6 +1,8 @@
 import scrapy
 
-from skins.skins.skinClass import Skin
+from my_dataclasses.price import Price
+from my_dataclasses.skin import Skin
+from my_enum.price_type import PriceType
 
 
 class SkinsscrappingSpider(scrapy.Spider):
@@ -46,10 +48,18 @@ class SkinsscrappingSpider(scrapy.Spider):
                 hasFeaturesLores = tds[12].css("span").get() is not None
                 try:
                     price = int(price)
-                    if price in (5000, 150000):
-                        price = None
+                    priceDict = {
+                        "type" : PriceType.EB if price in (5000, 150000) else PriceType.RP,
+                        "value": price
+                    }
+
                 except:
-                    price = None
+                    price= None
+                    priceDict = {
+                        "type": PriceType.SPECIAL,
+                        "value": None
+                    }
+                price = Price.from_dict(priceDict)
                 # if price in ("5000", "150000", "special", "", "None"):
                 #     price= None
                 # else:
@@ -64,7 +74,7 @@ class SkinsscrappingSpider(scrapy.Spider):
                         "name": skinName,
                         "date": date,
                         "hasChroma": hasChroma,
-                        "price": price,
+                        "price": price.to_dict(),
                         "isAvailable": isAvailable,
                         "hasVoiceFilter": hasVoiceFilter,
                         "hasAdditonalUniqueQuotes": hasAdditonalUniqueQuotes,
