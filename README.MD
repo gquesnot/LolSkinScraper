@@ -2,6 +2,7 @@
 
 
 Look at skins.json for Raw Data.
+
 The parser is used to extract the data for Excel / google sheet 
 
 ### Installation and Usage
