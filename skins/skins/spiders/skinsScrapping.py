@@ -2,6 +2,7 @@ import scrapy
 
 from my_dataclasses.price import Price
 from my_dataclasses.skin import Skin
+from my_enum.availability_type import AvailabilityType
 from my_enum.price_type import PriceType
 
 
@@ -51,13 +52,23 @@ class SkinsscrappingSpider(scrapy.Spider):
                     date = None
                 else:
                     date = f"{date[2]}/{self.dateMapping.index(date[1]) + 1:02d}/{date[0]}"
-
+                    available = tds[2].css("span").get()
+                    if "Available" in available:
+                        available = AvailabilityType.AVAILABLE
+                    elif "Legacy" in available:
+                        available = AvailabilityType.LEGACY
+                    elif "Rare" in available:
+                        available=  AvailabilityType.RARE
+                    elif "Limited" in available:
+                        available = AvailabilityType.LIMITED
+                    elif "Removed" in available:
+                        available = AvailabilityType.REMOVED
                     yield Skin.from_dict({
                         "name": tds[1].xpath("text()").get(),
                         "date": date,
                         "hasChroma": tds[13].css('span').get() is not None,
                         "price": Price.from_dict(priceDict).to_dict(),
-                        "isAvailable": tds[2].css("span").get() is not None,
+                        "available": available,
                         "hasVoiceFilter": tds[5].css("span").get() is not None,
                         "hasAdditonalUniqueQuotes": tds[6].css("span").get() is not None,
                         "hasNewVoiceHover": tds[7].css("span").get() is not None,

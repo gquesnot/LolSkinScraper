@@ -7,6 +7,7 @@ import dacite
 from dacite import from_dict
 
 from my_dataclasses.price import Price
+from my_enum.availability_type import AvailabilityType
 from my_enum.price_type import PriceType
 
 
@@ -16,7 +17,7 @@ class Skin:
     name: str
     timestamp: Union[int, None]
     hasChroma: bool
-    isAvailable: bool
+    available: AvailabilityType
     hasVoiceFilter: bool
     hasAdditonalUniqueQuotes: bool
     hasNewVoiceHover: bool
