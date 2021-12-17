@@ -77,7 +77,7 @@ def parseSkins(path, hintDate):
                 f"{all}\t"
                 f"{withChroma}\t"
                 f"{int((withChroma / all) * 100) if all else 0}%\t"
-                f"{prices/allPrices if allPrices else 0}\t"
+                f"{int(prices/allPrices) if allPrices else 0}\t"
                 f"{prices}"
             )
     # print(nbSkins, i)
@@ -95,5 +95,5 @@ if __name__ == '__main__':
     if not args.without_scraping:
         startCrawler(crawlPath)
     if not args.without_parsing:
-        parseSkins(crawlPath, args.date_type)
+        parseSkins(crawlPath, args.type_date)
 
