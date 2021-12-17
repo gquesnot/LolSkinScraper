@@ -1,4 +1,4 @@
-# SCRAP LOL SKIN INFOS
+# SCRAP LOL SKIN INFOS FROM [LOL FANDOM](https://leagueoflegends.fandom.com/wiki/List_of_champion_skins_(League_of_Legends))
 
 
 for python 3.10.
