@@ -87,7 +87,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Scrap Lol Data')
     parser.add_argument('-ws','--without_scraping', help="run without scraping", action="store_true")
     parser.add_argument('-wp','--without_parsing', help="run without parsing", action="store_true")
-    parser.add_argument('-dt','--date_type', type=str, default="year", help="type de date : year or month or day")
+    parser.add_argument('-td','--type_date', type=str, default="year", help="TYPE_DATE: year or month or day, default: year")
 
     args = parser.parse_args()
     print(args)
